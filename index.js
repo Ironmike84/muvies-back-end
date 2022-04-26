@@ -62,9 +62,9 @@ app.get('/Movies/:Title',passport.authenticate('jwt', { session: false }),(req, 
   });
 
   //--------------------------------------------------------------------------------------// GET Movie by Genre Name
-app.get('/Movies/Genre/:Name',passport.authenticate('jwt', { session: false }),(req, res) => {
+app.get('/Movie/Genre/:Name',passport.authenticate('jwt', { session: false }),(req, res) => {
 
-  Movies.findOne({ 'Genre.Name': req.params.Name })
+  Movies.find({ 'Genre': req.params.Name })
   .then((Movies) => {
     res.json(Movies);
   })
