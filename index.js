@@ -62,7 +62,7 @@ app.get('/Movies/:Title',passport.authenticate('jwt', { session: false }),(req, 
   });
 
   //--------------------------------------------------------------------------------------// GET Movie by Genre Name
-app.get('/Movie/Genre/:Name',passport.authenticate('jwt', { session: false }),(req, res) => {
+app.get('/Genre/:Name',passport.authenticate('jwt', { session: false }),(req, res) => {
 
   Movies.find({ Genre: req.params.Name })
   .then((Movies) => {
@@ -75,7 +75,7 @@ app.get('/Movie/Genre/:Name',passport.authenticate('jwt', { session: false }),(r
 });
 
   //------------------------------------------------------------------------------------// GET Movie by Director Name
-  app.get('/Movies/Actors/:Name',passport.authenticate('jwt', { session: false }),(req, res) => {
+  app.get('/Actors/:Name',passport.authenticate('jwt', { session: false }),(req, res) => {
 
     actors.findOne({ 'actor.Name': req.params.Name })
     .then((actors) => {
@@ -103,29 +103,29 @@ app.get('/Movie/Genre/:Name',passport.authenticate('jwt', { session: false }),(r
     });
   });
 
-//--------------------------------------------------------------------------------------------------// GET All Genres
-app.get('/genres', passport.authenticate('jwt', { session: false }),(req, res) => {
-  genres.find()
-  .then((genres) => {
-    res.status(201).json(genres);
-  })
-  .catch((err) => {
-    console.error(err);
-    res.status(500).send('Error: ' + err);
-  });
-});
+// //--------------------------------------------------------------------------------------------------// GET All Genres
+// app.get('/genres', passport.authenticate('jwt', { session: false }),(req, res) => {
+//   genres.find()
+//   .then((genres) => {
+//     res.status(201).json(genres);
+//   })
+//   .catch((err) => {
+//     console.error(err);
+//     res.status(500).send('Error: ' + err);
+//   });
+// });
 
 //----------------------------------------------------------------------------------------------------// GET One Genre
-app.get('/genres/:Name',passport.authenticate('jwt', { session: false }),(req, res) => {
-  genres.findOne({ Name: req.params.Name })
-  .then((genres) => {
-    res.json(genres);
-  })
-  .catch((err) => {
-    console.error(err);
-    res.status(500).send('Error: ' + err);
-  });
-});
+// app.get('/genres/:Name',passport.authenticate('jwt', { session: false }),(req, res) => {
+//   genres.findOne({ Name: req.params.Name })
+//   .then((genres) => {
+//     res.json(genres);
+//   })
+//   .catch((err) => {
+//     console.error(err);
+//     res.status(500).send('Error: ' + err);
+//   });
+// });
 //----------------------------------------------------------------------------------------------// GET All Directors
 app.get('/directors',passport.authenticate('jwt', { session: false }),(req, res) => {
   Directors.find()
