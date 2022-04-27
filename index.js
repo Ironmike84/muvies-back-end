@@ -74,8 +74,23 @@ app.get('/Genre/:Name',passport.authenticate('jwt', { session: false }),(req, re
   });
 });
 
-  //------------------------------------------------------------------------------------// GET Movie by Director Name
-  app.get('/Actors/:Name',passport.authenticate('jwt', { session: false }),(req, res) => {
+  
+//------------------------------------------------------------------------------------// 
+
+app.get('/Actors',passport.authenticate('jwt', { session: false }),(req, res) => {
+
+  actors.find()
+  .then((actors) => {
+    res.json(actors);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  });
+});
+
+
+  app.get('/Actor/:Name',passport.authenticate('jwt', { session: false }),(req, res) => {
 
     actors.findOne({ 'actor.Name': req.params.Name })
     .then((actors) => {
