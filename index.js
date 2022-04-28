@@ -202,11 +202,13 @@ app.get('/favMovies',passport.authenticate('jwt', { session: false }), (req, res
 
 
 //---------------------------------------------------------------------------------------------// POST NEW FAV MOVIE
-app.put('/favMovies/newFav/:UserName',passport.authenticate('jwt', { session: false }), (req, res) => {
+app.post('/favMovies/newFav/:UserName',passport.authenticate('jwt', { session: false }), (req, res) => {
   favMovies.findOneAndUpdate({ UserName: req.params.UserName }, {
-    $push: {FavoriteMovies:[{_id: req.body._id,
-                            Title: req.body.Title,
-                            Genre: req.body.Genre}]}
+    $push: {_id: req.body._id,
+                                        Title: req.body.Title,
+                                        Genre: req.body.Genre
+                                      }
+                                                      
 },
    { new: true }, // This line makes sure that the updated document is returned
   (err, updatedUser) => {
