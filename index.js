@@ -230,7 +230,7 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
       if (!Favs) {
         res.status(400).send('ID: ' + req.params._id + ' was not found!!');
       } else {
-        Favs.deleteOne({FavoriteMovies: [{ObjectId: req.params._id}]});
+        this.Favs.deleteOne({FavoriteMovies: [{ObjectId: req.params._id}]});
         res.status(200).send('ID: ' + req.params._id + ' was deleted!');
       }
     })
