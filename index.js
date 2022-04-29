@@ -224,13 +224,13 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 
 //------------------------------------------------------------------------------------------// DELETE Favorite Movie
 app.delete('/Favorites/:UserName/delete/:Title',passport.authenticate('jwt', { session: false }), (req, res) => {
-  favMovies.findOne({ UserName: req.params.UserName})
-    .then((favMovies) => {
+  users.findOneAndUpdate({ UserName: req.params.UserName})
+    .then((users) => {
 
-      if (!favMovies) {
+      if (!users) {
         res.status(400).send('Title: ' + req.params.Title + ' was not found!!');
       } else {
-        favMovies.deleteOne({FavoriteMovies:[{Title: req.params.Title}]});
+        users.deleteOne({FavoriteMovies:[{Title: req.params.Title}]});
         res.status(200).send('Title: ' + req.params.Title + ' was deleted!');
       }
     })
