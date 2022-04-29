@@ -230,7 +230,7 @@ app.delete('/Favorites/:UserName/delete/:Title',passport.authenticate('jwt', { s
       if (!favMovies) {
         res.status(400).send('Title: ' + req.params.Title + ' was not found!!');
       } else {
-        favMovies.deleteOne({FavoriteMovies:[{Title: `ObjectId:${req.params.Title}`}]});
+        favMovies.deleteOne({FavoriteMovies:[{Title: req.params.Title}]});
         res.status(200).send('Title: ' + req.params.Title + ' was deleted!');
       }
     })
