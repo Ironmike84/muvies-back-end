@@ -27,7 +27,7 @@ let usersSchema = mongoose.Schema({
   Password: {type: String, required: true},
   Email: {type: String, required: true},
   Birthday: Date,
-  FavoriteMovies:[{type: Object }],
+  FavoriteMovies:{type: Object},
   ImagePath: String
 });
 
