@@ -224,7 +224,7 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 
 //------------------------------------------------------------------------------------------// DELETE Favorite Movie
 app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-  users.findOneAndModify({ UserName: req.params.UserName})  
+  users.findOneAndUpdate({ UserName: req.params.UserName})  
     .then((users) => {
         
       if (!users) {
