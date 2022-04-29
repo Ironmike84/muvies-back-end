@@ -223,8 +223,8 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 });
 
 //------------------------------------------------------------------------------------------// DELETE Favorite Movie
-app.delete('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-  users.findOneAndDelete({ UserName: req.params.UserName})  
+app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
+  users.findOneAndModify({ UserName: req.params.UserName})  
     .then((users) => {
         
       if (!users) {
