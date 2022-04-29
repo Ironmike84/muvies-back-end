@@ -176,10 +176,10 @@ app.get('/directors/:Name',passport.authenticate('jwt', { session: false }), (re
     });
 });
 //----------------------------------------------------------------------------------------------------// GET FAV MOVIE
-app.get('/favMovies/:UserName',passport.authenticate('jwt', { session: false }), (req, res) => {
-  favMovies.findOne({'_id.UserName': req.params.UserName })
-  .then((favMovie) => {
-    res.json(favMovie);
+app.get('/Favorites/:UserName',passport.authenticate('jwt', { session: false }), (req, res) => {
+  users.find({UserName: req.params.UserName })
+  .then((users) => {
+    res.json(users.FavoriteMovies);
   })
   .catch((err) => {
     console.error(err);
@@ -188,17 +188,17 @@ app.get('/favMovies/:UserName',passport.authenticate('jwt', { session: false }),
 
 });
 
-//--------------------------------------------------------------------------------------------------------// GET FAV MOVIE
-app.get('/favMovies',passport.authenticate('jwt', { session: false }), (req, res) => {
-  favMovies.find()
-  .then((favMovies) => {
-    res.json(favMovies);
-  })
-  .catch((err) => {
-    console.error(err);
-    res.status(500).send('Error: ' + err);
-  });
-});
+// //--------------------------------------------------------------------------------------------------------// GET FAV MOVIE
+// app.get('/favMovies',passport.authenticate('jwt', { session: false }), (req, res) => {
+//   favMovies.find()
+//   .then((favMovies) => {
+//     res.json(favMovies);
+//   })
+//   .catch((err) => {
+//     console.error(err);
+//     res.status(500).send('Error: ' + err);
+//   });
+// });
 
 
 //---------------------------------------------------------------------------------------------// POST NEW FAV MOVIE
@@ -223,7 +223,7 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 });
 
 //------------------------------------------------------------------------------------------// DELETE Favorite Movie
-app.delete('/Favorites/:UserName/delete/:Title',passport.authenticate('jwt', { session: false }), (req, res) => {
+app.put('/Favorites/:UserName/delete/:Title',passport.authenticate('jwt', { session: false }), (req, res) => {
   users.findOneAndUpdate({ UserName: req.params.UserName})
     .then((users) => {
 
