@@ -179,7 +179,7 @@ app.get('/directors/:Name',passport.authenticate('jwt', { session: false }), (re
 app.get('/Favorites/:UserName',passport.authenticate('jwt', { session: false }), (req, res) => {
   users.find({UserName: req.params.UserName })
   .then((users) => {
-    res.json(users.FavoriteMovies);
+    res.json(users);
   })
   .catch((err) => {
     console.error(err);
