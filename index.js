@@ -230,7 +230,7 @@ app.put('/Favorites/:UserName/delete/:Title',passport.authenticate('jwt', { sess
       if (!users) {
         res.status(400).send('Title: ' + req.params.Title + ' was not found!!');
       } else {
-        users.deleteOne({UserName: req.params.UserName, FavoriteMovies: [{Title: req.params.Title}]});
+        users.deleteOne({FavoriteMovies: [{Title: req.params.Title}]});
         res.status(200).send('Title: ' + req.params.Title + ' was deleted!');
       }
     })
@@ -296,7 +296,7 @@ app.post('/Users/NewUser/:UserName', (req, res) => {
             Password: hashedPassword,
             Email: req.body.Email,
             Birthday: req.body.Birthday,
-          FavoriteMovies:[req.body.favMovies],
+          FavoriteMovies:[],
           ImagePath: req.body.ImagePath,
         })
         .then((user) => { res.status(201).json(user) })
