@@ -226,11 +226,11 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
   users.findOneAndUpdate({ UserName: req.params.UserName})  
     .then((users) => {
-
-      if (!users) {
+        let Favs = users.FavoriteMovies
+      if (!Favs) {
         res.status(400).send('ID: ' + req.params._id + ' was not found!!');
       } else {
-        users.deleteOne({FavoriteMovies: [{ObjectId: req.params._id}]});
+        Favs.deleteOne({FavoriteMovies: [{ObjectId: req.params._id}]});
         res.status(200).send('ID: ' + req.params._id + ' was deleted!');
       }
     })
