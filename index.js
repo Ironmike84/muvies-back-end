@@ -224,10 +224,10 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 
 //------------------------------------------------------------------------------------------// DELETE Favorite Movie
 app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-  users.findOneAndDelete({ UserName: req.params.UserName },{FavoriteMovies:{ $elemMatch: 
+  users.findOneAndDelete({ UserName: req.params.UserName },{FavoriteMovies:  
      [{
       ObjectId: req.params._id
-    } ]}
+    } ]
                                                       
 },
    { new: false }, // This line makes sure that the updated document is returned
