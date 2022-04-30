@@ -231,13 +231,13 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
     }] }
                                                       
 ,
-   { new: false }, // This line makes sure that the updated document is returned
-  (err, updatedUser) => {
+   // This line makes sure that the updated document is returned
+  (err, ) => {
     if (err) {
       console.error(err);
       res.status(500).send('Error: ' + err);
     } else {
-      res.json(updatedUser);
+      alert('shit Balls')
     }
   });
 });
