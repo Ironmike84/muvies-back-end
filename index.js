@@ -224,22 +224,20 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 
 //------------------------------------------------------------------------------------------// DELETE Favorite Movie
 app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-  users.findOneAndDelete({ UserName: req.params.UserName }, 
-     { FavoriteMovies: [{
-      ObjectId: req.body._id,
-
-    }] }
-                                                      
-,
-   // This line makes sure that the updated document is returned
-  (err, ) => {
-    if (err) {
+  users.findOneAndUpdate({ UserName: req.params.UserName}, {FavoriteMovies: {ObjectId: req.params._id}})  
+    .then((users) => {
+        
+      if (!users) {
+        res.status(400).send('ID: ' + req.params._id + ' was not found!!');
+      } else {
+        users.deleteOne({FavoriteMovies:[{_id: req.params.id}]})
+        res.status(200).send('ID: ' + req.params._id + ' was deleted!');
+      }
+    })
+    .catch((err) => {
       console.error(err);
       res.status(500).send('Error: ' + err);
-    } else {
-      alert('shit Balls')
-    }
-  });
+    });
 });
 //===================================================================================================// USER REGISTRY
 //===================================================================================================//
