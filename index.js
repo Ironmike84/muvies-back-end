@@ -223,50 +223,38 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 });
 
 //------------------------------------------------------------------------------------------// DELETE Favorite Movie
-app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-  users.findOneAndUpdate({ UserName: req.params.UserName }, { $pull: { FavoriteMovies: [{ObjectID: req.params._id }] } })// Search to see if a user with the requested username already exists
-      .then((user) => {
-        console.log(user)
-      
-          .catch((error) => {
-            console.error(error);
-            res.status(500).send('Error: ' + error);
-          });
-      }
-    )
-
-
-  });
-
 // app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-//   users.findOneAndUpdate({ UserName: req.params.UserName}, {
-
-//     FavoriteMovies: 
-//       [{ObjectId: req.params._id}]
-    
-
-//   })  
-//     .then((users) => {
-        
-//       if (!users) {
-//         res.status(400).send('ID: ' + req.params._id + ' was not found!!');
-//       } else {
-//         users.delete({
-
-        
-//           $pull: 
-//             [{ObjectId: req.params._id}]
-         
+//   users.findOneAndUpdate({ UserName: req.params.UserName }, { $pull: { FavoriteMovies: [{ObjectID: req.params._id }] } })// Search to see if a user with the requested username already exists
+//       .then((user) => {
+//         console.log(user)
       
-//         })  
-//         res.status(200).send('ID: ' + req.params._id + ' was deleted!');
+//           .catch((error) => {
+
+//             console.error(error);
+//             res.status(500).send('Error: ' + error);
+//           });
 //       }
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//       res.status(500).send('Error: ' + err);
-//     });
-// });
+//     )
+
+
+//   });
+
+app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
+  users.findOneAndUpdate({ UserName: req.params.UserName }, { $pull: { FavoriteMovies: [{ObjectID: req.params._id }] } })
+    .then((users) => {
+        
+      if (!users) {
+        res.status(400).send('ID: ' + req.params._id + ' was not found!!');
+      } else {
+        users.findOneAndUpdate({ UserName: req.params.UserName }, { $pull: { FavoriteMovies: [{ObjectID: req.params._id }] } })
+        res.status(200).send('ID: ' + req.params._id + ' was deleted!');
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
 //===================================================================================================// USER REGISTRY
 //===================================================================================================//
 
