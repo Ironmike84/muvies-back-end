@@ -223,55 +223,35 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 });
 
 //------------------------------------------------------------------------------------------// DELETE Favorite Movie
-
 app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-  users.findOne(req.params.UserName, function(err, user){
-      if(err){
-          console.log(err)
+  users.findOneAndUpdate({ UserName: req.params.UserName}, {
+
+    $pull: { FavoriteMovies: {
+      ObjectId: req.params._id,
+    } }
+
+  })  
+    .then((users) => {
+        
+      if (!users) {
+        res.status(400).send('ID: ' + req.params._id + ' was not found!!');
       } else {
-          user.update({
-              'users._id': req.params._id
-            }, {
-              $pull: { FavoriteMovies: { _id: req.params._id } }
-            }, function (error, result) {
-                console.log("User:" + user);
-                console.log("ID:" + req.params._id);
-                console.log(result);
-          
-            });
-      }
-  })
-});
-// ====================================================================================================
-// app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-//   users.findOneAndUpdate({ UserName: req.params.UserName}, {
-
-//     $pull: { FavoriteMovies: {
-//       ObjectId: req.params._id,
-//     } }
-
-//   })  
-//     .then((users) => {
-        
-//       if (!users) {
-//         res.status(400).send('ID: ' + req.params._id + ' was not found!!');
-//       } else {
-//         users.u({ UserName: req.params.UserName}, {
+        users.u({ UserName: req.params.UserName}, {
 
         
-//           $pull: { FavoriteMovies: {
-//             ObjectId: req.params._id,
-//           } }
+          $pull: { FavoriteMovies: {
+            ObjectId: req.params._id,
+          } }
       
-//         })  
-//         res.status(200).send('ID: ' + req.params._id + ' was deleted!');
-//       }
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//       res.status(500).send('Error: ' + err);
-//     });
-// });
+        })  
+        res.status(200).send('ID: ' + req.params._id + ' was deleted!');
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
 //===================================================================================================// USER REGISTRY
 //===================================================================================================//
 
