@@ -56,10 +56,10 @@ let genreSchema = mongoose.Schema({
   Description: String
 });
 //------------------------------------------------------------------------------// FAVMOVIES MODEL SCHEMA
-let favMoviesSchema = mongoose.Schema({
+let FavoriteMoviesSchema = mongoose.Schema({
   _id: {type:Object},
-  UserName: String,
-  FavoriteMovies: [{_id:Object}]
+  Title: String,
+  Genre: String
 })
 
 //------------------------------------------------------------------------------// FAVMOVIES MODEL SCHEMA
@@ -77,7 +77,7 @@ let actorsSchema = mongoose.Schema({
   let users = mongoose.model('users', usersSchema);
   let Directors = mongoose.model('Directors', directorSchema);
   let genres = mongoose.model('genres', genreSchema);
-  let favMovies = mongoose.model('favMovies', favMoviesSchema);
+  let FavoriteMovies = mongoose.model('FavoriteMovies', FavoriteMoviesSchema);
   let actors = mongoose.model('actors', actorsSchema);
 
 //------------------------------------------------------------------------------// EXPORT Models
@@ -85,5 +85,5 @@ let actorsSchema = mongoose.Schema({
   module.exports.users = users;
   module.exports.Directors = Directors;
   module.exports.genres = genres;
-  module.exports.favMovies = favMovies;
+  module.exports.FavoriteMovies = FavoriteMovies;
   module.exports.actors = actors;

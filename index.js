@@ -18,7 +18,7 @@ const Movies = Models.Movie;
 const users = Models.users;
 const Directors = Models.Directors;
 const genres = Models.genres;
-const favMovies = Models.favMovies;
+const FavoriteMovies = Models.FavoriteMovies;
 const actors = Models.actors;
 //===================================================================================================//BODY Parser
 const bodyParser = require('body-parser');
@@ -240,7 +240,7 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 //   });
 
 app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-  users.findOneAndUpdate({ UserName: req.params.UserName }, { $delete: { FavoriteMovies: [{ObjectID: req.params._id }] } })
+  users.findOneAndUpdate({ UserName: req.params.UserName }, { $pull: { FavoriteMovies: [{ObjectID: req.params._id }] } })
     .then((users) => {
         
       if (!users) {
