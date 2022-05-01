@@ -231,7 +231,7 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
           return res.status(400).send(req.body.UserName + ' already exists');
         } else {
           user
-          .findOneAndDelete(
+          .remove(
             { 
               FavoriteMovies: [{_id: req.params._id}]
             
