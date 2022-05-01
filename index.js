@@ -236,7 +236,7 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
       if (!users) {
         res.status(400).send('ID: ' + req.params._id + ' was not found!!');
       } else {
-        users.update({
+        users.delete({
 
         
           $pull: 
