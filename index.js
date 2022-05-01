@@ -224,7 +224,12 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 
 //------------------------------------------------------------------------------------------// DELETE Favorite Movie
 app.post('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-  users.findOneAndRemove({ UserName: req.params.UserName }, {FavoriteMovies:[{ObjectId: req.params._id}]},
+  users.findOneAndRemove({ UserName: req.params.UserName }, {FavoriteMovies:{
+   
+      ObjectId: req.params._id
+    
+                                                      
+}},
    { new: true }, // This line makes sure that the updated document is returned
   (err, updatedUser) => {
     if (err) {
