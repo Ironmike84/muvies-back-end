@@ -238,10 +238,10 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
       } else {
         users.update({
 
-        $pull{
-           FavoriteMovies: 
+        
+          $pull: { FavoriteMovies: 
             [{ObjectId: req.params._id}]
-        }
+         }
       
         })  
         res.status(200).send('ID: ' + req.params._id + ' was deleted!');
