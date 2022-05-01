@@ -224,34 +224,18 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 
 //------------------------------------------------------------------------------------------// DELETE Favorite Movie
 app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-  users.findOne({ UserName: req.body.UserName }) // Search to see if a user with the requested username already exists
-      .then((users) => {
-        console.log(users)
-        if (users) {
-        //If the user is found, send a response that it already exists
-          return res.status(400).send(req.body.UserName + ' already exists');
-        } else {
-          users.findOneAndUpdate(
-            { 
-              FavoriteMovies: 
-              
-              $pull
-              [
-              
-                {_id: req.params._id}
-              ]
-            
-          })
+  users.findOneAndUpdate({ UserName: req.params.UserName }, { $pull: { FavoriteMovies: [{ObjectID: req.params._id }] } })// Search to see if a user with the requested username already exists
+      .then((user) => {
+        console.log(user)
+      
           .catch((error) => {
             console.error(error);
             res.status(500).send('Error: ' + error);
           });
       }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
-    });
+    )
+
+
   });
 
 // app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
