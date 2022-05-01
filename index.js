@@ -224,23 +224,30 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 
 //------------------------------------------------------------------------------------------// DELETE Favorite Movie
 app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-  users.findOneAndRemove({ UserName: req.params.UserName }, {FavoriteMovies:
-      [{
-      ObjectId: req.params._id
-    }] 
-                                                      
-},
-   { new: true },
-  // This line makes sure that the updated document is returned
-  (err, updatedUser) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    } else {
-      res.json(updatedUser);
-    }
+  users.findOne({ UserName: req.body.UserName }) // Search to see if a user with the requested username already exists
+      .then((user) => {
+        if (user) {
+        //If the user is found, send a response that it already exists
+          return res.status(400).send(req.body.UserName + ' already exists');
+        } else {
+          user
+          .remove(
+            { 
+              FavoriteMovies:[{_id: req.params._id}],
+            
+          })
+          .then((user) => { res.status(201).json(user) })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+          });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
   });
-});
 
 // app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
 //   users.findOneAndUpdate({ UserName: req.params.UserName}, {
@@ -363,7 +370,7 @@ app.delete('/users/remove/:UserName', passport.authenticate('jwt', { session: fa
   //-------------------------------------------------------------------------------------------------// ERROR MESSAGE
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).send(err,'Oh No!!! Something broke!');
+    res.status(500).send('Oh No!!! Something broke!');
   });
 //-----------------------------------------------------------------------------------------------------// PORT CALL
 
