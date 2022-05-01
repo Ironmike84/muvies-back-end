@@ -231,12 +231,11 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
           return res.status(400).send(req.body.UserName + ' already exists');
         } else {
           user
-          .deleteOne(
+          .findOneAndDelete(
             { 
-              FavoriteMovies:[{_id: req.params._id}],
+              FavoriteMovies: [{_id: req.params._id}]
             
           })
-          .then((user) => { res.status(201).json(user) })
           .catch((error) => {
             console.error(error);
             res.status(500).send('Error: ' + error);
