@@ -224,13 +224,13 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 
 //------------------------------------------------------------------------------------------// DELETE Favorite Movie
 app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-  users.deleteOne({ UserName: req.params.UserName }, {FavoriteMovies:
+  users.delete({ UserName: req.params.UserName }, {FavoriteMovies:
       [{
       ObjectId: req.params._id
     }] 
                                                       
 },
-   { new: false },
+   { new: true },
   // This line makes sure that the updated document is returned
   (err, updatedUser) => {
     if (err) {
@@ -363,7 +363,7 @@ app.delete('/users/remove/:UserName', passport.authenticate('jwt', { session: fa
   //-------------------------------------------------------------------------------------------------// ERROR MESSAGE
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).send('Oh No!!! Something broke!');
+    res.status(500).send(err,'Oh No!!! Something broke!');
   });
 //-----------------------------------------------------------------------------------------------------// PORT CALL
 
