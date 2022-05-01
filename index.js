@@ -226,13 +226,20 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
   users.findOne({ UserName: req.body.UserName }) // Search to see if a user with the requested username already exists
       .then((user) => {
+        console.log(user)
         if (user) {
         //If the user is found, send a response that it already exists
           return res.status(400).send(req.body.UserName + ' already exists');
         } else {
-          user.deleteOne(
+          user.findOneAndUpdate(
             { 
-              FavoriteMovies: [{_id: req.params._id}]
+              FavoriteMovies: 
+              
+              $pull
+              [
+              
+                {_id: req.params._id}
+              ]
             
           })
           .catch((error) => {
