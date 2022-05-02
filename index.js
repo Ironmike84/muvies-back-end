@@ -241,7 +241,7 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 
 app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
  
-users.update({
+users.findOneAndUpdate({
   "UserName": req.params.UserName
 },
 {
