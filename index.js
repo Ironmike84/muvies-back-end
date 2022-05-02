@@ -245,30 +245,12 @@ users.findOneAndUpdate({
   "UserName": req.params.UserName
 },
 {
-  "$pull": {
-    "FavoriteMovies": {
-      "_id": ObjectId(`${req.params._id}`)
+  $pull: {
+    FavoriteMovies: {
+      _id: ObjectId(`${req.params._id}`)
     }
   }
 })
-    .then((user) => {
-        
-      if (!user) {
-        res.status(400).send('ID: ' + req.params._id + ' was not found!!');
-      } else {
-        user.update({
-          "UserName": req.params.UserName
-        },
-        {
-          "$pull": {
-            "FavoriteMovies": {
-              "_id": ObjectId(`${req.params._id}`)
-            }
-          }
-        })
-        res.status(200).send('ID: ' + req.params._id + ' was deleted!');
-      }
-    })
     .catch((err) => {
       console.error(err);
       res.status(500).send('Error: ' + err);
