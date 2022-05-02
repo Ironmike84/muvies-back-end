@@ -246,7 +246,7 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
       if (!user) {
         res.status(400).send('ID: ' + req.params._id + ' was not found!!');
       } else {
-        findOneAndUpdate({
+        user.updateOne({
           UserName: req.params.UserName
         },
         {
