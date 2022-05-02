@@ -275,8 +275,8 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
 //--------------------------------------------------------------------------------------------// GET Users By Username
 app.get('/users/:UserName', passport.authenticate('jwt', { session: false }),(req, res) => {
   users.findOne({ UserName: req.params.UserName })
-    .then((Users) => {
-      res.json(Users);
+    .then((user) => {
+      res.json(user);
     })
     .catch((err) => {
       console.error(err);
@@ -286,8 +286,8 @@ app.get('/users/:UserName', passport.authenticate('jwt', { session: false }),(re
 //--------------------------------------------------------------------------------------------------// GET All Users
 app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
   users.find()
-    .then((users) => {
-      res.status(201).json(users);
+    .then((user) => {
+      res.status(201).json(user);
     })
     .catch((err) => {
       console.error(err);
