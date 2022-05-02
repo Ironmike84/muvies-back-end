@@ -240,13 +240,32 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 //   });
 
 app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-  users.findOne({ UserName: req.params.UserName },  { FavoriteMovies: [{ObjectID: req.params._id }] } )
+ 
+users.update({
+  "UserName": req.params.UserName
+},
+{
+  "$pull": {
+    "FavoriteMovies": {
+      "_id": ObjectId(`${req.params._id}`)
+    }
+  }
+})
     .then((user) => {
         
       if (!user) {
         res.status(400).send('ID: ' + req.params._id + ' was not found!!');
       } else {
-        users.findOneAndUpdate({ UserName: req.params.UserName }, { $pull: { FavoriteMovies: [{ObjectID: req.params._id }] } })
+        user.update({
+          "UserName": req.params.UserName
+        },
+        {
+          "$pull": {
+            "FavoriteMovies": {
+              "_id": ObjectId(`${req.params._id}`)
+            }
+          }
+        })
         res.status(200).send('ID: ' + req.params._id + ' was deleted!');
       }
     })
