@@ -246,16 +246,20 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
       if (!user) {
         res.status(400).send('ID: ' + req.params._id + ' was not found!!');
       } else {
-        users.findOneAndUpdate({
+        findOneAndUpdate({
           UserName: req.params.UserName
         },
         {
-          "$pull": {
-            "FavoriteMovies": {
-              _id: req.params._id
+          FavoriteMovies: {
+            "$elemMatch": {
+              "$ne": [
+                "_id",
+                ObjectId(`${req.params._id}`)
+              ]
             }
           }
         })
+        
         res.status(200).send('ID: ' + req.params._id + ' was deleted!');
       }
     })
