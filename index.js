@@ -240,7 +240,7 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 //   });
 
 app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-  users.findOne({ UserName: req.params.UserName },  { FavoriteMovies: [{ObjectID: req.params._id }] } )
+  users.findOne({ UserName: req.params.UserName })
     .then((user) => {
         
       if (!user) {
@@ -252,7 +252,7 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
         {
           FavoriteMovies: {
             "$elemMatch": {
-              "$ne": [
+              "$pull": [
                 "_id",
                 ObjectId(`${req.params._id}`)
               ]
