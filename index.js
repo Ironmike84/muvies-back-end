@@ -240,7 +240,7 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 //   });
 
 app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-  users.findOne({ UserName: req.params.UserName })
+  users.findOneAndUpdate({ UserName: req.params.UserName })
     .then((user) => {
         
       if (!user) {
@@ -251,13 +251,14 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
         },
         {
           FavoriteMovies: {
-            "$elemMatch": {
-              "$pull": ["_id", req.params._id]
+            $elemMatch: {
+              $pull: [_id, req.params._id]
             }
           }
         })
         
-        res.status(200).send('ID: ' + req.params._id + ' was deleted!');
+        res.status(200).send('ID: ' + req.params._id + ' was deleted!', user);
+        
       }
     })
     .catch((err) => {
