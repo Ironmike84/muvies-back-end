@@ -254,7 +254,7 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
             "$elemMatch": {
               "$pull": [
                 "_id",
-                ObjectId(`${req.params._id}`)
+                ObjectId('2009')
               ]
             }
           }
