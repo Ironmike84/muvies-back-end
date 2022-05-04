@@ -257,7 +257,7 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 //       res.status(500).send('Error: ' + err);
 //     });
 // });
-app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
+app.post('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
   users.update({
     UserName: req.params.UserName
     },
@@ -266,17 +266,8 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
         "FavoriteMovies": { ObjectId:req.params._id }
     }
                        
-},
-    // This line makes sure that the updated document is returned
-  (err, updatedUser) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    } else {
-      res.json(updatedUser);
-    }
-  });
-});
+}
+);
 
 
 //===================================================================================================// USER REGISTRY
