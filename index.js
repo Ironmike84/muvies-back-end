@@ -246,7 +246,7 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
       if (!user) {
         res.status(400).send('ID: ' + req.params._id + ' was not found!!');
       } else {
-        user.removeOne({FavoriteMovies: {$pull:[{ ObjectId: req.params_id}]}})
+        user.findOne({FavoriteMovies: {$elematch:[{ ObjectId: req.params_id}] }, $pull:[{ ObjectId: req.params_id}]})
         
         res.status(200).send('ID: ' + req.params._id + ' was deleted!');
         
