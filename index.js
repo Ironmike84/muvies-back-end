@@ -257,7 +257,7 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 //       res.status(500).send('Error: ' + err);
 //     });
 // });
-app.post('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
+app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
   users.update({
     UserName: req.params.UserName
     },
@@ -266,7 +266,7 @@ app.post('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessi
         FavoriteMovies: [{ ObjectId:req.params._id}]
     }
                        
-}),
+},
     // This line makes sure that the updated document is returned
   (err, updatedUser) => {
     if (err) {
@@ -275,7 +275,7 @@ app.post('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessi
     } else {
       res.json(updatedUser);
     }
-  };
+  });
 });
 
 
