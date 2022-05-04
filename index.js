@@ -262,7 +262,7 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
     UserName: req.params.UserName
     },
     {
-      $update: { 
+      $set: { 
         FavoriteMovies:[{ ObjectId:req.params._id}]
     },$pull: { ObjectId:req.params._id}
                        
