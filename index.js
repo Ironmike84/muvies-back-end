@@ -266,7 +266,15 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
         FavoriteMovies: { ObjectId:req.params._id }
     
                        
-      }})})
+      }.then((user) => {
+        res.json(user);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      })}
+      
+      )})
 
 //===================================================================================================// USER REGISTRY
 //===================================================================================================//
