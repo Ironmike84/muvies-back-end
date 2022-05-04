@@ -266,7 +266,7 @@ app.post('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessi
         FavoriteMovies: [{ ObjectId:req.params._id}]
     }
                        
-},
+}),
     // This line makes sure that the updated document is returned
   (err, updatedUser) => {
     if (err) {
@@ -275,7 +275,7 @@ app.post('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessi
     } else {
       res.json(updatedUser);
     }
-  });
+  };
 });
 
 
