@@ -257,18 +257,16 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 //       res.status(500).send('Error: ' + err);
 //     });
 // });
-app.post('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
+app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
   users.update({
     UserName: req.params.UserName
     },
     {
       "$pull": { 
         "FavoriteMovies": { ObjectId:req.params._id }
-    }
+    
                        
-}
-);
-
+      }})})
 
 //===================================================================================================// USER REGISTRY
 //===================================================================================================//
@@ -368,4 +366,4 @@ app.use((err, req, res, next) => {
 
 app.listen(port, '0.0.0.0',() => {
  console.log('Listening on Port ' + port);
-});
+})
