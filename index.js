@@ -263,12 +263,11 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
     },
     {
       "$pull": { 
-        "FavoriteMovies": { ObjectId:`${req.params._id}`}
+        "FavoriteMovies": { ObjectId:req.params._id}
     }
                        
-}),
-{new:false},
-    // This line makes sure that the updated document is returned
+},
+   { multi: true }, // This line makes sure that the updated document is returned
   (err, updatedUser) => {
     if (err) {
       console.error(err);
@@ -276,7 +275,7 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
     } else {
       res.json(updatedUser);
     }
-  };
+  });
 });
 
 
