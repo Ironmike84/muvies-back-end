@@ -240,7 +240,7 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 //   });
 
 app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-  users.updateOne({ UserName: req.params.UserName }, {FavoriteMovies: {deleteOne: {ObjectId:`${req.params._id}`}}})
+  users.updateOne({ UserName: req.params.UserName }, {FavoriteMovies: {$deleteOne: [{ObjectId:`${req.params._id}`}]}})
     .then((user) => {
         
       if (!user) {
