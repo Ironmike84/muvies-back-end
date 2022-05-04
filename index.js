@@ -264,17 +264,22 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
     {
       "$pull": { 
         "FavoriteMovies": { ObjectId:req.params._id }
-    
+    }.then(
+      res.status(200).send('Deleted')
+    )
                        
-      }.then((user) => {
-        res.json(user);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      })}
-      
-      )})
+},
+    // This line makes sure that the updated document is returned
+  (err, updatedUser) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    } else {
+      res.json(updatedUser);
+    }
+  });
+});
+
 
 //===================================================================================================// USER REGISTRY
 //===================================================================================================//
@@ -374,4 +379,4 @@ app.use((err, req, res, next) => {
 
 app.listen(port, '0.0.0.0',() => {
  console.log('Listening on Port ' + port);
-})
+});
