@@ -241,12 +241,12 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 
 app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
   users.findOne({ UserName: req.params.UserName }, {FavoriteMovies: [{ObjectId:`${req.params._id}`}]})
-    .then((user) => {
+    .then((res) => {
         
-      if (!user) {
+      if (!res) {
         res.status(400).send('ID: ' + req.params._id + ' was not found!!');
       } else {
-        user.updateOne({FavoriteMovies:{pull: ObjectId(`${req.params_id}`)}})
+        res.removeOne({ ObjectId: req.params_id})
         
         res.status(200).send('ID: ' + req.params._id + ' was deleted!');
         
