@@ -267,7 +267,7 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
     }
                        
 },
-   { multi: true }, // This line makes sure that the updated document is returned
+   { upsert: true }, // This line makes sure that the updated document is returned
   (err, updatedUser) => {
     if (err) {
       console.error(err);
