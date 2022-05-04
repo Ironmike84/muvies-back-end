@@ -239,24 +239,46 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 
 //   });
 
+// app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
+//   users.findOne({ UserName: req.params.UserName }, {FavoriteMovies: [{ObjectId:`${req.params._id}`}]})
+//     .then((user) => {
+        
+//       if (!user) {
+//         res.status(400).send('ID: ' + req.params._id + ' was not found!!');
+//       } else {
+//         db.users.updateOne({FavoriteMovies: {$elematch:[{ ObjectId: req.params_id}] }, $pull:[{ ObjectId: req.params_id}]})
+        
+//         res.status(200).send('ID: ' + req.params._id + ' was deleted!');
+        
+//       }
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//       res.status(500).send('Error: ' + err);
+//     });
+// });
 app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-  users.findOne({ UserName: req.params.UserName }, {FavoriteMovies: [{ObjectId:`${req.params._id}`}]})
-    .then((user) => {
-        
-      if (!user) {
-        res.status(400).send('ID: ' + req.params._id + ' was not found!!');
-      } else {
-        user.updateOne({FavoriteMovies: {$elematch:[{ ObjectId: req.params_id}] }, $pull:[{ ObjectId: req.params_id}]})
-        
-        res.status(200).send('ID: ' + req.params._id + ' was deleted!');
-        
-      }
-    })
-    .catch((err) => {
+  users.update({
+    UserName: req.params.UserName
+    },
+    {
+      "$pull": { 
+        "FavoriteMovies": { ObjectId:`${req.params._id}` }
+    }
+                       
+},
+   { new: true }, // This line makes sure that the updated document is returned
+  (err, updatedUser) => {
+    if (err) {
       console.error(err);
       res.status(500).send('Error: ' + err);
-    });
+    } else {
+      res.json(updatedUser);
+    }
+  });
 });
+
+
 //===================================================================================================// USER REGISTRY
 //===================================================================================================//
 
