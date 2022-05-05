@@ -257,7 +257,7 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 //       res.status(500).send('Error: ' + err);
 //     });
 // });
-app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
+app.put('/Favorites/:UserName/delete/:_id', (req, res) => {
   users.update({
     UserName: req.params.UserName
     },
