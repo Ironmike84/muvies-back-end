@@ -262,9 +262,9 @@ app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { sessio
     UserName: req.params.UserName
     },
     {
-      $Modify: { 
-        FavoriteMovies:{ ObjectId:req.params._id}
-    },$pull: { ObjectId:req.params._id}
+      "$pull": { 
+        FavoriteMovies:[{ ObjectId:req.params._id}]
+    }
                        
 },
     // This line makes sure that the updated document is returned
