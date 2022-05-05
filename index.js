@@ -258,13 +258,14 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 //     });
 // });
 app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-  users.update({
+  db.users.update({
     UserName: req.params.UserName
     },
     {
       "$pull": { 
-        FavoriteMovies:[{ ObjectId:req.params._id}]
+        "FavoriteMovies": { ObjectId:`${req.params._id}` }
     }
+    
                        
 },
     // This line makes sure that the updated document is returned
