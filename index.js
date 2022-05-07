@@ -335,7 +335,7 @@ app.put('/Users/Update/:UserName', (req, res) => {
       return res.status(422).json({ errors: errors.array() });
     }}
     let hashedPassword = users.hashPassword(req.body.Password);
-    users.update({
+    users.findOne({
       UserName: req.params.UserName
       },
       {
