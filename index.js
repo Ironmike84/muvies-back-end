@@ -223,40 +223,7 @@ app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false })
 });
 
 //------------------------------------------------------------------------------------------// DELETE Favorite Movie
-// app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-//   users.findOneAndUpdate({ UserName: req.params.UserName }, { $pull: { FavoriteMovies: [{ObjectID: req.params._id }] } })// Search to see if a user with the requested username already exists
-//       .then((user) => {
-//         console.log(user)
-          
-//           .catch((error) => {
 
-//             console.error(error);
-//             res.status(500).send('Error: ' + error);
-//           });
-//       }
-//     )
-
-
-//   });
-
-// app.put('/Favorites/:UserName/delete/:_id',passport.authenticate('jwt', { session: false }), (req, res) => {
-//   users.findOne({ UserName: req.params.UserName }, {FavoriteMovies: [{ObjectId:`${req.params._id}`}]})
-//     .then((user) => {
-        
-//       if (!user) {
-//         res.status(400).send('ID: ' + req.params._id + ' was not found!!');
-//       } else {
-//         db.users.updateOne({FavoriteMovies: {$elematch:[{ ObjectId: req.params_id}] }, $pull:[{ ObjectId: req.params_id}]})
-        
-//         res.status(200).send('ID: ' + req.params._id + ' was deleted!');
-        
-//       }
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//       res.status(500).send('Error: ' + err);
-//     });
-// });
 app.put('/Favorites/:UserName/delete/:_id', (req, res) => {
   users.update({
     UserName: req.params.UserName
@@ -352,7 +319,52 @@ app.post('/Users/NewUser/:UserName', (req, res) => {
     res.status(500).send('Error: ' + error);
   });
 });
+//--------------------------------------------------------------------------------Update UserInfo
+app.post('/Users/Update/:UserName', (req, res) => {
+  [
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail()
+  ], (req, res) => {
 
+  // check the validation object for errors
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }}
+
+
+    let hashedPassword = users.hashPassword(req.body.Password);
+  users.findOne({ UserName: req.body.UserName }) // Search to see if a user with the requested username already exists
+    .then((user) => {
+      if (user) {
+      //If the user is found, send a response that it already exists
+        return res.status(400).send(req.body.UserName + ' already exists');
+      } else {
+        user
+        .update(
+          { _id: req.body._id,
+            UserName: req.body.UserName,
+            Password: hashedPassword,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday,
+            FavoriteMovies:[],
+            ImagePath: req.body.ImagePath,
+        })
+        .then((user) => { res.status(201).json(user) })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).send('Error: ' + error);
+        });
+    }
+  })
+  .catch((error) => {
+    console.error(error);
+    res.status(500).send('Error: ' + error);
+  });
+});
 //----------------------------------------------------------------------------------------------------// DELETE User
 app.delete('/users/remove/:UserName', passport.authenticate('jwt', { session: false }),(req, res) => {
     users.deleteOne({ UserName: req.params.UserName })
