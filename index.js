@@ -320,7 +320,7 @@ app.post('/Users/NewUser/:UserName', (req, res) => {
   });
 });
 //--------------------------------------------------------------------------------Update UserInfo
-app.post('/Users/Update/:UserName', (req, res) => {
+app.put('/Users/Update/:UserName', (req, res) => {
   [
     check('Username', 'Username is required').isLength({min: 5}),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -334,37 +334,27 @@ app.post('/Users/Update/:UserName', (req, res) => {
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }}
-
-
     let hashedPassword = users.hashPassword(req.body.Password);
-  users.findOne({ UserName: req.body.UserName }) // Search to see if a user with the requested username already exists
-    .then((user) => {
-      if (user) {
-      //If the user is found, send a response that it already exists
-        return res.status(400).send(req.body.UserName + ' already exists');
-      } else {
-        user
-        .update(
-          { _id: req.body._id,
-            UserName: req.body.UserName,
-            Password: hashedPassword,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday,
-            FavoriteMovies:[],
-            ImagePath: req.body.ImagePath,
-        })
+    users.update({
+      UserName: req.params.UserName
+      },
+      {
+        "$set": { 
+          UserName: UserName,
+          Password: hashedPassword,
+          Email: Email,
+          Birthday: Birthday,
+          ImagePath: ImagePath
+      }                 
+  })
         .then((user) => { res.status(201).json(user) })
         .catch((error) => {
           console.error(error);
           res.status(500).send('Error: ' + error);
         });
-    }
-  })
-  .catch((error) => {
-    console.error(error);
-    res.status(500).send('Error: ' + error);
-  });
-});
+    })
+
+
 //----------------------------------------------------------------------------------------------------// DELETE User
 app.delete('/users/remove/:UserName', passport.authenticate('jwt', { session: false }),(req, res) => {
     users.deleteOne({ UserName: req.params.UserName })
