@@ -321,30 +321,30 @@ app.post('/Users/NewUser/:UserName', (req, res) => {
 });
 //--------------------------------------------------------------------------------Update UserInfo
 app.put('/Users/Update/:UserName', (req, res) => {
-  [
-    check('Username', 'Username is required').isLength({min: 5}),
-    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-    check('Password', 'Password is required').not().isEmpty(),
-    check('Email', 'Email does not appear to be valid').isEmail()
-  ], (req, res) => {
+  // [
+  //   check('Username', 'Username is required').isLength({min: 5}),
+  //   check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  //   check('Password', 'Password is required').not().isEmpty(),
+  //   check('Email', 'Email does not appear to be valid').isEmail()
+  // ], (req, res) => {
 
-  // check the validation object for errors
-    let errors = validationResult(req);
+  // // check the validation object for errors
+  //   let errors = validationResult(req);
 
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
-    }}
+  //   if (!errors.isEmpty()) {
+  //     return res.status(422).json({ errors: errors.array() });
+  //   }}
     let hashedPassword = users.hashPassword(req.body.Password);
-    users.findOne({
+    users.update({
       UserName: req.params.UserName
       },
       {
         "$set": { 
-          UserName: UserName,
+          UserName: req.body.UserName,
           Password: hashedPassword,
-          Email: Email,
-          Birthday: Birthday,
-          ImagePath: ImagePath
+          Email: req.body.Email,
+          Birthday: req.body.Birthday,
+          ImagePath: req.body.ImagePath
       }                 
   })
         .then((user) => { res.status(201).json(user) })
