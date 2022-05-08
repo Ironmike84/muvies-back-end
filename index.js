@@ -130,29 +130,6 @@ app.get('/Actors',passport.authenticate('jwt', { session: false }),(req, res) =>
     });
   });
 
-// //--------------------------------------------------------------------------------------------------// GET All Genres
-// app.get('/genres', passport.authenticate('jwt', { session: false }),(req, res) => {
-//   genres.find()
-//   .then((genres) => {
-//     res.status(201).json(genres);
-//   })
-//   .catch((err) => {
-//     console.error(err);
-//     res.status(500).send('Error: ' + err);
-//   });
-// });
-
-//----------------------------------------------------------------------------------------------------// GET One Genre
-// app.get('/genres/:Name',passport.authenticate('jwt', { session: false }),(req, res) => {
-//   genres.findOne({ Name: req.params.Name })
-//   .then((genres) => {
-//     res.json(genres);
-//   })
-//   .catch((err) => {
-//     console.error(err);
-//     res.status(500).send('Error: ' + err);
-//   });
-// });
 //----------------------------------------------------------------------------------------------// GET All Directors
 app.get('/directors',passport.authenticate('jwt', { session: false }),(req, res) => {
   Directors.find()
@@ -187,19 +164,6 @@ app.get('/Favorites/:UserName',passport.authenticate('jwt', { session: false }),
   });
 
 });
-
-// //--------------------------------------------------------------------------------------------------------// GET FAV MOVIE
-// app.get('/favMovies',passport.authenticate('jwt', { session: false }), (req, res) => {
-//   favMovies.find()
-//   .then((favMovies) => {
-//     res.json(favMovies);
-//   })
-//   .catch((err) => {
-//     console.error(err);
-//     res.status(500).send('Error: ' + err);
-//   });
-// });
-
 
 //---------------------------------------------------------------------------------------------// POST NEW FAV MOVIE
 app.post('/Favorites/:UserName',passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -321,19 +285,6 @@ app.post('/Users/NewUser/:UserName', (req, res) => {
 });
 //--------------------------------------------------------------------------------Update UserInfo
 app.put('/Users/Update/:UserName', (req, res) => {
-  // [
-  //   check('Username', 'Username is required').isLength({min: 5}),
-  //   check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-  //   check('Password', 'Password is required').not().isEmpty(),
-  //   check('Email', 'Email does not appear to be valid').isEmail()
-  // ], (req, res) => {
-
-  // // check the validation object for errors
-  //   let errors = validationResult(req);
-
-  //   if (!errors.isEmpty()) {
-  //     return res.status(422).json({ errors: errors.array() });
-  //   }}
     let hashedPassword = users.hashPassword(req.body.Password);
     users.update({
       UserName: req.params.UserName
